@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='assets/bootstrap-5.0.1/css/bootstrap.min.css') }}">
+</head>
+<body class="bg-body">
+    
+    <div class="container">
+        <div class="p-5 bg-light">
+            <h2>Hello, This is a page for data scrapping</h2>
+        </div>
+
+        <div class="p-4">
+            Please fill the form to scrap data form your desired website!
+            <form action="/scrap" method="post">
+            <div class="row">
+                <div class="col-md-12">
+
+                    {{form.csrf_token}}
+                    <div class="col-md-6">
+                        <label for="siteURl" class="form-label text-info">Please enter your desired website URl:</label>
+                        {{form.siteURL(class_="form-control", id="siteURL", placeholder="Website URL")}}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="element-attribute" class="form-label text-info">Please enter element attribute:</label>
+                        {{form.element_attribute(class_="form-control", id="element-attribute", placeholder="Element Attribute")}}
+                        <div class="form-text text-center">The element attribute can id or class</div>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-info">Scarp</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    
+</body>
+</html>

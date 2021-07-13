@@ -1,0 +1,30 @@
+brotlipy==0.7.0
+certifi==2021.5.30
+cffi @ file:///C:/ci/cffi_1613247279197/work
+chardet @ file:///C:/ci/chardet_1607690654534/work
+click==8.0.1
+colorama==0.4.4
+conda==4.10.1
+conda-package-handling @ file:///C:/ci/conda-package-handling_1618262320430/work
+cryptography @ file:///C:/ci/cryptography_1616769344312/work
+Flask==2.0.1
+Flask-WTF==0.15.1
+idna @ file:///home/linux1/recipes/ci/idna_1610986105248/work
+itsdangerous==2.0.1
+Jinja2==3.0.1
+MarkupSafe==2.0.1
+menuinst==1.4.16
+pycosat==0.6.3
+pycparser @ file:///tmp/build/80754af9/pycparser_1594388511720/work
+pyOpenSSL @ file:///tmp/build/80754af9/pyopenssl_1608057966937/work
+PySocks @ file:///C:/ci/pysocks_1605287845585/work
+pywin32==227
+requests @ file:///tmp/build/80754af9/requests_1608241421344/work
+ruamel-yaml-conda @ file:///C:/ci/ruamel_yaml_1616016967756/work
+six @ file:///tmp/build/80754af9/six_1623709665295/work
+tqdm @ file:///tmp/build/80754af9/tqdm_1615925068909/work
+urllib3==1.25.8
+Werkzeug==2.0.1
+win-inet-pton @ file:///C:/ci/win_inet_pton_1605306167264/work
+wincertstore==0.2
+WTForms==2.3.3
