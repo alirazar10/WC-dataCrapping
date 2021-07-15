@@ -33,30 +33,23 @@ class ScrapWebPage(BeautifulSoup):
         
         return products_and_next_page_number
 
-
-    def get_product_info(self, product_list):
-        number_of_pages = int(product_list['number_of_pages'])
-        # print(product_list)
-        # return product_list
-        new_page_link = product_list['next_page_number_link']
+    def loop_pagination_and_all_links(self, links):
+        pass
+    def get_product_info(self, product_link):
+        number_of_pages = int(product_link['number_of_pages'])
+        new_page_link = product_link['next_page_number_link']
         product = []
-
-        for x in  range(1, number_of_pages):
+        for x in  range(0, number_of_pages):
             print(x)
-            pro_links = self.get_product_links(new_page_link)
-            new_page_link = pro_links['next_page_number_link']
-            print(pro_links['next_page_number_link'])
-           
-        # return '123'
-        # return product_list['number_of_pages']
-
+            new_pro_links = self.get_product_links(new_page_link)
+            new_page_link = new_pro_links['next_page_number_link']
             product_data = {}
-            for index, link in enumerate(product_list['products_links']):
-                sleep(1) #delay for one sec to not down the server
-                response_result = requests.get(product_list['products_links'][link])
+            for index, link in enumerate(product_link['products_links']):
+                # sleep(1) #delay for one sec to not down the server
+                response_result = requests.get(product_link['products_links'][link])
                 product_page_resource = response_result.content
                 parsed_result = BeautifulSoup(product_page_resource, 'lxml')
-                product_title = parsed_result.find(attrs = {'class' :'product_title entry-title'}).text
+                product_title = parsed_result.find(attrs = {'class' :'product_title entry-title'})
                 stock_info = parsed_result.find(class_ = 'stock in-stock')
                 short_description = parsed_result.find(class_ = 'woocommerce-product-details__short-description')
                 product_price = parsed_result.find(class_ = 'woocommerce-Price-amount amount')
@@ -77,7 +70,7 @@ class ScrapWebPage(BeautifulSoup):
                     stock = 0
                     instock = 0
                 if product_title is not None:
-                    product_title = product_title
+                    product_title = product_title.text
                 else:
                     product_title = None
                 if short_description is not None:
@@ -85,10 +78,10 @@ class ScrapWebPage(BeautifulSoup):
                 else:
                     short_desc = None
 
-                if product_image is not None and product_image != 'https://refurbish.ae/wp-content/uploads/2020/08/Refurbish.ae_.png':
-                    product_image = product_image
+                if product_image is not None and product_image.attrs['href'] != 'https://refurbish.ae/wp-content/uploads/2020/08/Refurbish.ae_.png':
+                    product_image = product_image.attrs['href'] 
                 else:
-                    product_image= 'https://refurbished.ae/wp-content/uploads/2021/06/logo-vertical.png'
+                    product_image = 'https://refurbished.ae/wp-content/uploads/2021/06/logo-vertical.png'
                 if product_price is not None:
                     price = product_price.find('bdi').contents[1]
                     
@@ -146,22 +139,15 @@ class ScrapWebPage(BeautifulSoup):
                     "tag": tags
                 }
                 product.append(product_data)
-                
-               
+            product_link['products_links'] = new_pro_links['products_links']   
+            # print(product_link['products_links'])
+            if new_page_link is None:
+                break  
         products = pd.DataFrame(product)
-            # return product_page_resource
         products.to_csv('products.csv', mode='a')
+        
         print(type(product))
         print(len(product))
         return '123'
-        # ID,Type,SKU,Name,Published,"Is featured?",
-        # "Visibility in catalog","Short description",Description,
-        # "Date sale price starts","Date sale price ends","Tax status",
-        # "Tax class","In stock?",Stock,"Low stock amount","Backorders allowed?",
-        # "Sold individually?","Weight (kg)","Length (cm)","Width (cm)","Height (cm)",
-        # "Allow customer reviews?","Purchase note","Sale price","Regular price",Categories,
-        # Tags,"Shipping class",Images,"Download limit","Download expiry days",Parent,"Grouped products",
-        # Upsells,Cross-sells,"External URL","Button text",Position,"Attribute 1 name","Attribute 1 value(s)",
-        # "Attribute 1 visible","Attribute 1 global","Attribute 2 name","Attribute 2 value(s)","Attribute 2 visible",
-        # "Attribute 2 global","Attribute 3 name","Attribute 3 value(s)","Attribute 3 visible","Attribute 3 global"
+        
 
