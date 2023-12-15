@@ -19,13 +19,20 @@ class ScrapWebPage(BeautifulSoup):
             porduct_links[index] = links[0].attrs['href']
 
         next_page_number = soup.find(attrs = {'class' : 'woocommerce-pagination'}) # this is for pagination it is not complete 
+
+        pageULR = ''
+        if page_url.endswith('/'):
+            pageULR = page_url[:-1]
+        else:
+            pageULR=page_url
+
         if next_page_number is not None:
             next_page_number_link = next_page_number.find(attrs = {'class': 'next page-numbers'})
             if next_page_number_link is not None:
-
                 next_page_number_link = next_page_number_link.attrs['href']
+                next_page_link = pageULR + next_page_number_link
                 number_of_pages = next_page_number.find_all('li')[-2].text
-                products_and_next_page_number = {'next_page_number_link': next_page_number_link, 'number_of_pages': number_of_pages, 'products_links': porduct_links}
+                products_and_next_page_number = {'next_page_number_link':  next_page_link, 'number_of_pages': number_of_pages, 'products_links': porduct_links}
             else:
                 products_and_next_page_number = {'next_page_number_link': None, 'number_of_pages': None, 'products_links': porduct_links}
         else:
@@ -35,7 +42,8 @@ class ScrapWebPage(BeautifulSoup):
 
     def loop_pagination_and_all_links(self, links):
         pass
-    def get_product_info(self, product_link):
+
+    def get_product_info(self, product_link):        
         number_of_pages = int(product_link['number_of_pages'])
         new_page_link = product_link['next_page_number_link']
         product = []
